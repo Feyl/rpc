@@ -14,12 +14,13 @@
     <dependencies>
         <dependency>
             <groupId>com.feyl</groupId>
-            <artifactId>service-api</artifactId>
+            <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.feyl</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>service-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
