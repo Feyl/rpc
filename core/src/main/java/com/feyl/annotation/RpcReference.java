@@ -10,14 +10,12 @@ import java.lang.annotation.*;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD})
 @Inherited
 public @interface RpcReference {
 
     /**
      * Service version, default value is empty string
-     *
-     * @return
      */
     String version() default "";
 
@@ -25,4 +23,5 @@ public @interface RpcReference {
      * Service group, default value is empty string
      */
     String group() default "";
+
 }

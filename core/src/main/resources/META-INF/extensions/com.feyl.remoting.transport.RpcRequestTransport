@@ -1,0 +1,2 @@
+netty=com.feyl.remoting.transport.netty.client.NettyRpcClient
+socket=com.feyl.remoting.transport.socket.SocketRpcClient

@@ -1,0 +1,1 @@
+loadBalance=com.feyl.loadbalance.loadbalancer.ConsistentHashLoadBalance
