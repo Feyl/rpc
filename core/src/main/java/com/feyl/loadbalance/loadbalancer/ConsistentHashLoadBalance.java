@@ -1,6 +1,5 @@
 package com.feyl.loadbalance.loadbalancer;
 
-import com.feyl.extension.SPI;
 import com.feyl.loadbalance.AbstractLoadBalance;
 import com.feyl.remoting.dto.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -15,19 +14,29 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 一致性哈希负载均衡算法
+ *
+ *  <a href="https://www.jianshu.com/p/24fa4bdb9b9d">System.identityHashCode(obj) 与 obj.hashcode()</a>
+ *  <a href="https://zhuanlan.zhihu.com/p/34969168">负载均衡——一致性hash算法</a>
+ *
  * @author Feyl
  */
 @Slf4j
 public class ConsistentHashLoadBalance extends AbstractLoadBalance {
+
+    /**
+     * key：远程服务名
+     * value：一致性哈希选择器
+     */
     private final ConcurrentHashMap<String, ConsistentHashSelector> selectors = new ConcurrentHashMap<>();
 
     @Override
     protected String doSelect(List<String> serviceAddresses, RpcRequest rpcRequest) {
         int identityHashCode = System.identityHashCode(serviceAddresses);
-        // build rpc service name by rpcRequest
+        // 根据 rpc 请求获取 远程服务名
         String rpcServiceName = rpcRequest.getRpcServiceName();
         ConsistentHashSelector selector = selectors.get(rpcServiceName);
-        // check for updates
+        // 检查是否需要更新
         if (selector == null || selector.identityHashCode != identityHashCode) {
             selectors.put(rpcServiceName, new ConsistentHashSelector(serviceAddresses, 160, identityHashCode));
             selector = selectors.get(rpcServiceName);
@@ -35,9 +44,19 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
         return selector.select(rpcServiceName + Arrays.stream(rpcRequest.getParameters()));
     }
 
+    /**
+     * 一致性哈希选择器
+     */
     static class ConsistentHashSelector {
+        /**
+         * key：根据远程服务地址获得的哈希值
+         * value： 远程服务地址
+         */
         private final TreeMap<Long, String> virtualInvokers;
 
+        /**
+         * 根据远程服务地址列表获得的 唯一性哈希值
+         */
         private final int identityHashCode;
 
         ConsistentHashSelector(List<String> invokers, int replicaNumber, int identityHashCode) {

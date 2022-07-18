@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * RpcRequest processor
+ * RPC 请求处理器
  *
  * @author Feyl
  */

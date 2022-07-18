@@ -6,7 +6,7 @@ import com.feyl.remoting.dto.RpcRequest;
 import java.util.List;
 
 /**
- * Abstract class for a load balancing policy
+ * 负载均衡策略抽象类
  *
  * @author Feyl
  */

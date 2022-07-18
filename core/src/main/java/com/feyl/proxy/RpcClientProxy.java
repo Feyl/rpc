@@ -32,7 +32,7 @@ public class RpcClientProxy implements InvocationHandler {
     private static final String INTERFACE_NAME = "interfaceName";
 
     /**
-     * 用于向服务器发送请求，有两种实现:socket和netty。
+     * 用于向服务器发送请求，有两种实现：socket和netty。
      */
     private final RpcRequestTransport rpcRequestTransport;
 
@@ -52,14 +52,14 @@ public class RpcClientProxy implements InvocationHandler {
      * 获取代理对象
      */
     @SuppressWarnings("unchecked")
-    public <T> T getProxy(Class<T> clazz){
+    public <T> T getProxy(Class<T> clazz) {
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, this);
     }
 
 
     /**
      * 当使用代理对象调用方法时，实际上会调用此方法。
-     * 代理对象是通过getProxy方法获得的对象。
+     * 代理对象是通过 getProxy方法获得的对象。
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")

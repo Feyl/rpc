@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ *
  * @author Feyl
  */
 @AllArgsConstructor
@@ -13,22 +14,21 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class RpcServiceConfig {
-
     /**
-     * service version
+     * 远程调用服务名
      */
-    private String version = "";
+    private Object service;
 
     /**
-     * when the interface has multiple implementation classes, distinguish by group
      * 当接口有多个实现类时，按组进行区分
      */
     private String group = "";
 
     /**
-     * target service
+     * 服务版本：主要是为后续不兼容升级提供可能
      */
-    private Object service;
+    private String version = "";
+
 
     public String getRpcServiceName() {
         return this.getServiceName() + this.group + this.version;

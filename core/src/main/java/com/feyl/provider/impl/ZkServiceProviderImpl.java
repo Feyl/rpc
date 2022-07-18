@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ZkServiceProviderImpl implements ServiceProvider {
 
     /**
-     * key: rpc 服务名字（interface name + version + group）
+     * key: rpc 服务名字（interface name + group + version）
      * value：服务对象
      */
     private final Map<String, Object> serviceMap;
@@ -37,7 +37,7 @@ public class ZkServiceProviderImpl implements ServiceProvider {
     public ZkServiceProviderImpl() {
         serviceMap = new ConcurrentHashMap<>();
         registeredService = ConcurrentHashMap.newKeySet();
-        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
+        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zookeeper");
     }
 
     @Override

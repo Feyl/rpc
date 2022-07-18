@@ -5,7 +5,7 @@ import com.feyl.extension.SPI;
 import java.net.InetSocketAddress;
 
 /**
- * service registration
+ * 服务注册接口
  *
  * @author Feyl
  */
@@ -13,9 +13,8 @@ import java.net.InetSocketAddress;
 public interface ServiceRegistry {
 
     /**
-     *
-     * @param rpcServiceName rpc服务名字
-     * @param inetSocketAddress 服务地址
+     * @param rpcServiceName 服务提供方服务名（class name + group + version）
+     * @param inetSocketAddress 服务提供方地址（IP + Port）
      */
     void registerService(String rpcServiceName, InetSocketAddress inetSocketAddress);
 }

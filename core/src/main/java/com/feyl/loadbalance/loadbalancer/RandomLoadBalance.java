@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Implementation of random load balancing strategy
+ * 随机负载均衡算法
  *
  * @author Feyl
  */

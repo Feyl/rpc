@@ -19,7 +19,7 @@ public class RpcRequest implements Serializable {
     private static final long serialVersionUID = 1905122041950251207L;
 
     /**
-     * 远程调用请求ID
+     * RPC 请求ID
      */
     private String requestId;
 
@@ -43,10 +43,22 @@ public class RpcRequest implements Serializable {
      */
     private Object[] parameters;
 
-    private String version;
-
+    /**
+     * 主要用于处理一个接口有多个类实现的情况
+     */
     private String group;
 
+    /**
+     * 服务版本，主要是为后续不兼容升级提供可能
+     */
+    private String version;
+
+
+    /**
+     * 获取远程服务名
+     *
+     * @return 远程服务名
+     */
     public String getRpcServiceName() {
         return this.getInterfaceName() + this.getGroup() + this.getVersion();
     }

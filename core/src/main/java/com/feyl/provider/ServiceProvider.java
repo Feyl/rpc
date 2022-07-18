@@ -3,8 +3,7 @@ package com.feyl.provider;
 import com.feyl.config.RpcServiceConfig;
 
 /**
- * store and provide service object
- * 存储和提供服务对象
+ * 存储和提供 服务对象
  *
  * @author Feyl
  */

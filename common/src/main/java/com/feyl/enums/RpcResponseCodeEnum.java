@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
+ * 远程调用响应状态码及描述
+ *
  * @author Feyl
  */
 @AllArgsConstructor

@@ -12,31 +12,29 @@ import java.io.Serializable;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 public class RpcResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 715745410605631233L;
 
     /**
-     * 远程调用请求的ID
+     * RPC 请求ID
      */
     private String requestId;
 
     /**
-     * 远程调用响应状态码
+     * 调用的响应状态码
      */
     private Integer code;
 
     /**
-     * 远程调用响应信息
+     * 调用的响应信息
      */
     private String message;
 
     /**
-     * 响应数据
+     * 调用的响应体数据
      */
     private T data;
 
@@ -45,7 +43,7 @@ public class RpcResponse<T> implements Serializable {
         response.setCode(RpcResponseCodeEnum.SUCCESS.getCode());
         response.setMessage(RpcResponseCodeEnum.SUCCESS.getMessage());
         response.setRequestId(requestId);
-        if (null != data) {
+        if (data != null) {
             response.setData(data);
         }
         return response;

@@ -21,33 +21,59 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Curator(zookeeper client) util
+ * Zookeeper客户端工具 Curator util
+ *
+ * 详细参见：
+ * <a href="https://javaguide.cn/distributed-system/distributed-process-coordination/zookeeper/zookeeper-in-action.html">ZooKeeper 实战</a>
  *
  * @author Feyl
  */
 @Slf4j
 public class CuratorUtil {
 
+    /**
+     *  重试之间等待的时间
+     */
     private static final int BASE_SLEEP_TIME = 1000;
 
+    /**
+     * 最大重试次数
+     */
     private static final int MAX_RETRIES = 3;
 
+    /**
+     * zookeeper 注册远程服务的根地址
+     */
     public static final String ZK_REGISTER_ROOT_PATH = "/my-rpc";
 
+    /**
+     * key：远程服务
+     * value：远程服务对应的所有远程地址
+     * 相当于客户端本地缓存的作用
+     */
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
 
+    /**
+     * 存储已经在 Zookeeper 中注册的服务
+     */
     private static final Set<String> REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
 
+    /**
+     * 用于存储与 zookeeper服务器建立连接的客户端
+     */
     private static CuratorFramework zkClient;
 
+    /**
+     * Zookeeper 服务器的默认地址
+     */
     private static final String DEFAULT_ZOOKEEPER_ADDRESS = "127.0.0.1:2181";
 
     private CuratorUtil() {
     }
 
     /**
-     * Create persistent nodes.
-     * Unlike temporary nodes, persistent nodes are not removed when the client disconnects.
+     * 创建持久结点
+     * 一旦创建就一直存在即使 ZooKeeper 集群宕机，直到将其删除。
      *
      * @param path node path
      */
@@ -67,10 +93,10 @@ public class CuratorUtil {
     }
 
     /**
-     * Gets the children under a node
+     * 获取注册到 Zookeeper中的服务名对应的持久结点下的子结点（远程服务地址）
      *
-     * @param rpcServiceName rpc service name eg:com.feyl.HelloServicetest2version1
-     * @return All child nodes under the specified node
+     * @param rpcServiceName 远程服务名称 eg:com.feyl.HelloServicetest2version1
+     * @return 服务名对应的持久结点的所有子结点（远程服务地址）
      */
     public static List<String> getChildNodes(CuratorFramework zkClient, String rpcServiceName) {
         if (SERVICE_ADDRESS_MAP.containsKey(rpcServiceName)) {
@@ -81,7 +107,7 @@ public class CuratorUtil {
         try {
             result = zkClient.getChildren().forPath(servicePath);
             SERVICE_ADDRESS_MAP.put(rpcServiceName, result);
-            registerWatcher(rpcServiceName, zkClient);
+            registerWatcher(zkClient, rpcServiceName);
         } catch (Exception e) {
             log.error("Get child nodes for path [{}] fail", servicePath);
         }
@@ -89,11 +115,14 @@ public class CuratorUtil {
     }
 
     /**
-     * Registers to listen for changes to the specified node
+     * 注册并监听特定服务节点的变化
      *
-     * @param rpcServiceName rpc service name eg:com.feyl.HelloServicetest2version
+     * 详细参见：
+     * <a href="https://www.cnblogs.com/crazymakercircle/p/10228385.html#autoid-h3-4-2-0">PathChildrenCache 子节点监听</a>
+     *
+     * @param rpcServiceName 远程服务名 eg:com.feyl.HelloServicetest2version
      */
-    private static void registerWatcher(String rpcServiceName, CuratorFramework zkClient) throws Exception {
+    private static void registerWatcher(CuratorFramework zkClient, String rpcServiceName) throws Exception {
         String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
         PathChildrenCache cache = new PathChildrenCache(zkClient, servicePath, true);
         PathChildrenCacheListener listener = ((curatorFramework, pathChildrenCacheEvent) -> {
@@ -105,7 +134,7 @@ public class CuratorUtil {
     }
 
     /**
-     * Empty the registry of data
+     * 清空特定远程服务地址在 Zookeeper 注册的服务
      */
     public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
         REGISTERED_PATH_SET.stream().parallel().forEach(path -> {
@@ -120,27 +149,30 @@ public class CuratorUtil {
         log.info("All registered services on the server are cleared:[{}]", REGISTERED_PATH_SET.toString());
     }
 
-
-
-    public static CuratorFramework getZkClient() {
-        // check if user has set zk address
+    /**
+     *获取与 zookeeper服务端建立连接的 zookeeper 客户端
+     *
+     * @return
+     */
+    public static CuratorFramework getZookeeperClient() {
+        // 检查用户是否设置了 zookeeper 的地址
         Properties properties = PropertiesFileUtil.read(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
-        String zookeeperAddress = properties != null && properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) != null
-                ? properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) : DEFAULT_ZOOKEEPER_ADDRESS;
-        // if zkClient has been started, return directly
+        String zookeeperAddress = properties != null && properties.getProperty(RpcConfigEnum.ZOOKEEPER_ADDRESS.getPropertyValue()) != null
+                ? properties.getProperty(RpcConfigEnum.ZOOKEEPER_ADDRESS.getPropertyValue()) : DEFAULT_ZOOKEEPER_ADDRESS;
+        // 如果 zookeeper 客户端已经启动，则直接返回启动的客户端
         if (zkClient != null && zkClient.getState() == CuratorFrameworkState.STARTED) {
             return zkClient;
         }
-        // Retry strategy: Retry 3 times, and will increase the sleep time between retries.
+        // 重试策略：重试3次，并且将增加重试之间的睡眠时间。
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
         zkClient = CuratorFrameworkFactory.builder()
-                // the server to connect to (can be a server list)
+                // 要连接的服务器（可以是一个服务器列表）
                 .connectString(zookeeperAddress)
                 .retryPolicy(retryPolicy)
                 .build();
         zkClient.start();
         try {
-            // wait 30s until connect to the zookeeper
+            // 等待30s直到连接到zookeeper
             if (!zkClient.blockUntilConnected(30, TimeUnit.SECONDS)) {
                 throw new RuntimeException("Time out waiting to connect to Zookeeper!");
             }

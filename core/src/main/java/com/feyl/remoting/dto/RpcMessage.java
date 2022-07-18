@@ -3,6 +3,8 @@ package com.feyl.remoting.dto;
 import lombok.*;
 
 /**
+ * 远程调用消息
+ *
  * @author Feyl
  */
 @AllArgsConstructor
@@ -17,12 +19,12 @@ public class RpcMessage {
     private byte messageType;
 
     /**
-     * 序列化类型
+     * 消息序列化方式
      */
     private byte codec;
 
     /**
-     * 压缩类型
+     * 消息压缩方式
      */
     private byte compress;
 
@@ -32,7 +34,7 @@ public class RpcMessage {
     private int requestId;
 
     /**
-     * 数据
+     * 请求 数据
      */
     private Object data;
 }

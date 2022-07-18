@@ -31,12 +31,12 @@ public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
     @Override
     public InetSocketAddress lookupService(RpcRequest rpcRequest) {
         String rpcServiceName = rpcRequest.getRpcServiceName();
-        CuratorFramework zkClient = CuratorUtil.getZkClient();
+        CuratorFramework zkClient = CuratorUtil.getZookeeperClient();
         List<String> serviceUrlList = CuratorUtil.getChildNodes(zkClient, rpcServiceName);
         if (CollUtil.isEmpty(serviceUrlList)) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_CAN_NOT_BE_FOUND, rpcServiceName);
         }
-        //load balancing
+        // 负载均衡
         String targetServiceUrl = loadBalance.selectServiceAddress(serviceUrlList, rpcRequest);
         log.info("Successfully found the service address: [{}]", targetServiceUrl);
         String[] socketAddressArray = targetServiceUrl.split(":");
