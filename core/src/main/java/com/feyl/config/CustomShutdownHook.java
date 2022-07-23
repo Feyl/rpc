@@ -28,8 +28,8 @@ public class CustomShutdownHook {
         log.info("add ShutdownHook for clearAll");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                InetSocketAddress isa = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), NettyRpcServer.PORT);
-                CuratorUtil.clearRegistry(CuratorUtil.getZookeeperClient(), isa);
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), NettyRpcServer.PORT);
+                CuratorUtil.clearRegistry(CuratorUtil.getZookeeperClient(), inetSocketAddress);
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }

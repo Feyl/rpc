@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * value中存储真正实例
+ *
  * @author Feyl
  */
 public class Holder<T> {
