@@ -26,8 +26,11 @@ import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Server: Receive the client message, call the corresponding method according to the client message,
- * and then return the result to the client.
+ * 基于 Netty 的 RPC请求服务端
+ * 服务器：接收客户端消息，根据客户端消息调用相应的方法，然后将结果返回给客户端。
+ *
+ * <a href="https://baike.baidu.com/item/Nagle%E7%AE%97%E6%B3%95">Nagle算法</a>
+ * <a href="https://blog.csdn.net/wdscq1234/article/details/52432095">TCP-IP详解：Nagle算法</a>
  *
  * @author Feyl
  */

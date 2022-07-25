@@ -4,6 +4,8 @@ import com.feyl.annotation.RpcReference;
 import org.springframework.stereotype.Component;
 
 /**
+ * 远程调用客户端
+ *
  * @author Feyl
  */
 @Component

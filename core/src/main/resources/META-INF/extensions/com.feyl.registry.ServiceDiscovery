@@ -1,1 +1,1 @@
-zookeeper=com.feyl.registry.zk.ZkServiceDiscoveryImpl
+zookeeper=com.feyl.registry.zookeeper.ZkServiceDiscoveryImpl

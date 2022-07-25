@@ -172,7 +172,7 @@ public class CuratorUtil {
                 .build();
         zkClient.start();
         try {
-            // 等待30s直到连接到zookeeper
+            // 等待 30s 直到连接到zookeeper
             if (!zkClient.blockUntilConnected(30, TimeUnit.SECONDS)) {
                 throw new RuntimeException("Time out waiting to connect to Zookeeper!");
             }

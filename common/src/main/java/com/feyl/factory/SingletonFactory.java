@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 获取单例对象的工厂类
  *
+ * <a href="https://www.runoob.com/java/java-hashmap-computeifabsent.html">Java HashMap computeIfAbsent() 方法</a>
+ *
  * @author Feyl
  */
 public class SingletonFactory {

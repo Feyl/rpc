@@ -10,18 +10,24 @@ import com.feyl.config.RpcServiceConfig;
 public interface ServiceProvider {
 
     /**
-     * @param rpcServiceConfig rpc service related attributes
+     * 内存中缓存已经注册的服务名（interface name + group + version）
+     *
+     * @param rpcServiceConfig RPC服务相关的属性
      */
     void addService(RpcServiceConfig rpcServiceConfig);
 
     /**
-     * @param rpcServiceName rpc service name
-     * @return service object
+     * 获取服务对象
+     *
+     * @param rpcServiceName RPC服务名（interface name + group + version）
+     * @return RPC服务实例
      */
     Object getService(String rpcServiceName);
 
     /**
-     * @param rpcServiceConfig rpc service related attributes
+     * 将 RPC服务配置注册到注册中心
+     *
+     * @param rpcServiceConfig RPC服务相关的属性
      */
     void publishService(RpcServiceConfig rpcServiceConfig);
 }

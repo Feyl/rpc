@@ -17,7 +17,7 @@ class KryoSerializerTest {
     void kryoSerializerTest() {
         RpcRequest target = RpcRequest.builder().methodName("hello")
                 .parameters(new Object[]{"sayhelooloo", "sayhelooloosayhelooloo"})
-                .interfaceName("github.javaguide.HelloService")
+                .interfaceName("com.feyl.HelloService")
                 .paramTypes(new Class<?>[]{String.class, String.class})
                 .requestId(UUID.randomUUID().toString())
                 .group("group1")

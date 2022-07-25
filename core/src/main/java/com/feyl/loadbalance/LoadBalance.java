@@ -19,7 +19,7 @@ public interface LoadBalance {
      * 从现有服务地址列表中选择一个
      *
      * @param serviceUrlList 远程服务地址列表
-     * @param rpcRequest rpc请求
+     * @param rpcRequest rpc请求的服务
      * @return 目标服务地址
      */
     String selectServiceAddress(List<String> serviceUrlList, RpcRequest rpcRequest);

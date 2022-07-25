@@ -19,10 +19,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * 动态代理类
+ * RPC客户端 动态代理类
  * 当动态代理对象调用方法时，它实际上会调用下面的invoke方法。
  * 正是由于动态代理，客户端调用的远程方法就像调用本地方法一样（中间进程是屏蔽的）
  *
+ * <a href="https://juejin.cn/post/6844903744954433544">Java 动态代理详解</a>
  *
  * @author Feyl
  */
@@ -32,7 +33,7 @@ public class RpcClientProxy implements InvocationHandler {
     private static final String INTERFACE_NAME = "interfaceName";
 
     /**
-     * 用于向服务器发送请求，有两种实现：socket和netty。
+     * 用于向服务器发送请求，有两种实现：socket 和 netty。
      */
     private final RpcRequestTransport rpcRequestTransport;
 
@@ -60,6 +61,9 @@ public class RpcClientProxy implements InvocationHandler {
     /**
      * 当使用代理对象调用方法时，实际上会调用此方法。
      * 代理对象是通过 getProxy方法获得的对象。
+     *
+     * <a href="https://www.shouxicto.com/article/352.html">@SneakyThrows注解的作用及实现原理</a>
+     * <a href="https://www.cxyzjd.com/article/qq_22162093/115486647">@SneakyThrows注解</a>
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")

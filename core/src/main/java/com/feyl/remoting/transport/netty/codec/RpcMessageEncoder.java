@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * custom protocol encoder
+ * 根据自定义协议设置的编码器
  *
  *   0     1     2     3     4        5     6     7     8         9          10      11     12  13  14   15 16
  *   +-----+-----+-----+-----+--------+----+----+----+------+-----------+-------+----- --+-----+-----+-------+

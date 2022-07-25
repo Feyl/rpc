@@ -48,7 +48,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
                 rpcMessage.setCompress(CompressTypeEnum.GZIP.getCode());
                 if (msgType == RpcConstant.HEARTBEAT_REQUEST_TYPE) {
                     rpcMessage.setMessageType(RpcConstant.HEARTBEAT_RESPONSE_TYPE);
-                    rpcMessage.setData(RpcConstant.PING);
+                    rpcMessage.setData(RpcConstant.PONG);
                 } else {
                     RpcRequest rpcRequest = (RpcRequest) ((RpcMessage) msg).getData();
                     // 执行客户端需要执行的目标方法并且返回方法的执行结果
@@ -72,6 +72,9 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 长时间未收到客户端发送的远程调用请求或心跳信号则关闭连接
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
@@ -85,6 +88,9 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 处理服务端 pipeline 中出现的未处理的异常，关闭 channel
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("server catch exception");

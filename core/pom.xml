@@ -18,13 +18,14 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- netty -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
         </dependency>
 
-        <!--zookeeper-->
+        <!-- zookeeper curator -->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
@@ -35,6 +36,8 @@
             <artifactId>curator-recipes</artifactId>
             <version>${curator-version}</version>
         </dependency>
+
+        <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>

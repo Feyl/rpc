@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 
 /**
  * 基于 zookeeper 的服务注册
+ *
  *  服务被注册进zookeeper的时候，将完整的服务名称rpcServiceName
  * （class name + group + version）作为根节点，子节点是对应的服务地址（ip + 端口号）
  *      - class name：服务接口名也就是类名比如: com.feyl.HelloService
@@ -22,8 +23,8 @@ public class ZkServiceRegistryImpl implements ServiceRegistry {
     /**
      * 将服务注册到 zookeeper（以：服务名 + 远程服务地址的形式）
      *
-     * @param rpcServiceName    服务名
-     * @param inetSocketAddress 远程服务地址（IP + Port）
+     * @param rpcServiceName    服务名 （interface name + group + version）
+     * @param inetSocketAddress 远程服务地址（ip + port）
      */
     @Override
     public void registerService(String rpcServiceName, InetSocketAddress inetSocketAddress) {

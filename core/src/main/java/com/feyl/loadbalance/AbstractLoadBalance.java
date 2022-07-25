@@ -22,6 +22,13 @@ public abstract class AbstractLoadBalance implements LoadBalance {
         return doSelect(serviceAddresses, rpcRequest);
     }
 
+    /**
+     * 负载均衡策略，从目标服务地址列表中选取的服务地址
+     *
+     * @param serviceAddresses 目标服务地址列表
+     * @param rpcRequest rpc请求的服务
+     * @return 根据负载均衡算法从目标服务地址列表中选取的服务地址
+     */
     protected abstract String doSelect(List<String> serviceAddresses, RpcRequest rpcRequest);
 
 }

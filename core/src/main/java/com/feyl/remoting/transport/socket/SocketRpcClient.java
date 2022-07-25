@@ -15,7 +15,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
- * 基于 Socket 传输 RPC请求
+ * 基于 Socket 传输 RPC请求 客户端
  *
  * @author Feyl
  */

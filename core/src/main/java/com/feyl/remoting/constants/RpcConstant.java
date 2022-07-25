@@ -11,8 +11,11 @@ public class RpcConstant {
     /**
      * 魔数：验证 RPC请求消息
      */
-    public static final byte[] MAGIC_NUMBER = {(byte) 'g', (byte) 'r', (byte) 'p', (byte) 'c'};
+    public static final byte[] MAGIC_NUMBER = {(byte) 'f', (byte) 'l', (byte) 'o', (byte) 'w'};
 
+    /**
+     * 默认字符编码
+     */
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     /**

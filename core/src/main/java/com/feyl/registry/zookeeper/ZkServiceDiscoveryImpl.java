@@ -22,12 +22,21 @@ import java.util.List;
 @Slf4j
 public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
 
+    /**
+     * 负载均衡器
+     */
     private final LoadBalance loadBalance;
 
     public ZkServiceDiscoveryImpl() {
         this.loadBalance = ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension("loadBalance");
     }
 
+    /**
+     * 根据 RPC请求的服务获取提供服务的远程服务端地址
+     *
+     * @param rpcRequest 封装了RPC请求服务的对象
+     * @return 根据请求服务获取的网络套接字地址（ip + port）
+     */
     @Override
     public InetSocketAddress lookupService(RpcRequest rpcRequest) {
         String rpcServiceName = rpcRequest.getRpcServiceName();

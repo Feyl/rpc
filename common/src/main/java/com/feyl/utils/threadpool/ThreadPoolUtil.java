@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * 创建 ThreadPool（线程池）的工具类
+ * ThreadPool（线程池）的工具类
  *
  * @author Feyl
  */
@@ -16,8 +16,8 @@ public final class ThreadPoolUtil {
 
     /**
      * 通过 threadNamePrefix 来区分不同线程池（把相同 threadNamePrefix 的线程池看作是为同一业务场景服务）。
-     * key: threadNamePrefix
-     * value: threadPool
+     * key: threadNamePrefix 业务线程名称前缀
+     * value: threadPool 业务线程池
      */
     private static final Map<String, ExecutorService> THREAD_POOLS = new ConcurrentHashMap<>();
 
@@ -25,6 +25,12 @@ public final class ThreadPoolUtil {
 
     }
 
+    /**
+     * 创建自定义线程池
+     *
+     * @param prefix 业务线程名称前缀
+     * @return 线程池
+     */
     public static ExecutorService createCustomThreadPoolIfAbsent(String prefix) {
         CustomThreadPoolConfig config = new CustomThreadPoolConfig();
         return createCustomThreadPoolIfAbsent(config, prefix);
@@ -45,6 +51,14 @@ public final class ThreadPoolUtil {
         return pool;
     }
 
+    /**
+     * 根据 线程池配置类中的配置参数创建线程池
+     *
+     * @param config 线程池配置类
+     * @param prefix 业务线程名称前缀
+     * @param isDaemon 是否为守护线程
+     * @return
+     */
     private static ExecutorService createThreadPool(CustomThreadPoolConfig config, String prefix, Boolean isDaemon) {
         ThreadFactory factory = createThreadFactory(prefix, isDaemon);
         return new ThreadPoolExecutor(config.getCorePoolSize(), config.getMaximumPoolSize(),
@@ -53,10 +67,10 @@ public final class ThreadPoolUtil {
     }
 
     /**
-     * 创建 ThreadFactory 。如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
+     * 创建 ThreadFactory。如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
      *
      * @param prefix 作为创建的线程名字的前缀
-     * @param isDaemon 指定是否为 Daemon Thread(守护线程)
+     * @param isDaemon 指定是否为 Daemon Thread（守护线程）
      * @return ThreadFactory实例
      */
     public static ThreadFactory createThreadFactory(String prefix, Boolean isDaemon) {

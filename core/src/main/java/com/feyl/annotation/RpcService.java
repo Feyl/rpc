@@ -3,8 +3,8 @@ package com.feyl.annotation;
 import java.lang.annotation.*;
 
 /**
- * RPC service annotation, marked on the service implementation class
- * RPC服务注释，标记在服务实现类上
+ * RPC服务注解，标记在服务实现类上。
+ * 在可提供服务的类上标注该注解，在服务启动时，将标注该注解的类的实例在bean实例化之后注册到注册中心。
  *
  * @author Feyl
  */
@@ -15,14 +15,13 @@ import java.lang.annotation.*;
 public @interface RpcService {
 
     /**
-     * Service version, default value is empty string
-     * 服务版本号
+     * 远程调用服务组，默认值为空
+     */
+    String group() default "";
+
+    /**
+     * 远程调用服务版本号，默认值为空
      */
     String version() default "";
 
-    /**
-     * Service group, default value is empty string
-     * 服务组
-     */
-    String group() default "";
 }

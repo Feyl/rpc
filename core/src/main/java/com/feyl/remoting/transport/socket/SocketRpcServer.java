@@ -18,11 +18,16 @@ import java.util.concurrent.ExecutorService;
 import static com.feyl.remoting.transport.netty.server.NettyRpcServer.PORT;
 
 /**
+ * 基于 Socket 传输 RPC请求 服务端
+ *
  * @author Feyl
  */
 @Slf4j
 public class SocketRpcServer {
 
+    /**
+     * 用于存储执行客户端请求的线程的线程池
+     */
     private final ExecutorService threadPool;
 
     private final ServiceProvider serviceProvider;
@@ -33,6 +38,11 @@ public class SocketRpcServer {
         serviceProvider = SingletonFactory.getInstance(ZkServiceProviderImpl.class);
     }
 
+    /**
+     * 将RPC服务注册到注册中心并且将服务提供对象存入内存
+     *
+     * @param rpcServiceConfig RPC服务相关的配置
+     */
     public void registerService(RpcServiceConfig rpcServiceConfig) {
         serviceProvider.publishService(rpcServiceConfig);
     }

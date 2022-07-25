@@ -6,8 +6,9 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * scan custom annotations
  * 扫描自定义注解
+ *
+ * <a href="https://www.jianshu.com/p/3c5922ec3686">Spring @Import 机制</a>
  *
  * @author Feyl
  */
@@ -17,6 +18,9 @@ import java.lang.annotation.*;
 @Import(CustomScannerRegistrar.class)
 public @interface RpcScan {
 
+    /**
+     * 定义要扫描的包
+     */
     String[] basePackage();
 
 }

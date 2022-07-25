@@ -30,15 +30,28 @@ import java.util.concurrent.TimeUnit;
 /**
  * 初始化并关闭Bootstrap对象
  *
+ * <a href="https://blog.csdn.net/u013967175/article/details/78591810">IdleStateHandler心跳机制</a>
+ * <a href="https://zhuanlan.zhihu.com/p/344431341">CompletableFuture用法详解</a>
+ * <a href="https://blog.csdn.net/zhangphil/article/details/80731593">Java CompletableFuture的complete</a>
+ *
  * @author Feyl
  */
 @Slf4j
 public class NettyRpcClient implements RpcRequestTransport {
 
+    /**
+     * 服务发现中心
+     */
     private final ServiceDiscovery serviceDiscovery;
 
+    /**
+     * 服务器未响应的请求
+     */
     private final UnprocessedRequests unprocessedRequests;
 
+    /**
+     * 根据网络套接字地址获取对应的 channel
+     */
     private  final ChannelProvider channelProvider;
 
     private final Bootstrap bootstrap;
@@ -71,7 +84,12 @@ public class NettyRpcClient implements RpcRequestTransport {
     }
 
 
-
+    /**
+     * 根据网络套接字地址获取对应的 channel
+     *
+     * @param inetSocketAddress 网络套接字地址
+     * @return 套接字地址对应的 channel
+     */
     public Channel getChannel(InetSocketAddress inetSocketAddress) {
         Channel channel = channelProvider.get(inetSocketAddress);
         if (channel == null) {
@@ -82,7 +100,10 @@ public class NettyRpcClient implements RpcRequestTransport {
     }
 
     /**
-     * 连接服务器并获得通道，这样就可以向服务器发送RPC消息
+     * 连接服务器并获得通信通道
+     *
+     * @param inetSocketAddress 网络套接字地址
+     * @return 根据套接字地址连接服务器获取的通信通道
      */
     @SneakyThrows
     public Channel doConnect(InetSocketAddress inetSocketAddress) {
@@ -98,6 +119,12 @@ public class NettyRpcClient implements RpcRequestTransport {
         return completableFuture.get();
     }
 
+    /**
+     * 向服务端发送 RPC请求
+     *
+     * @param rpcRequest 封装RPC请求的实例
+     * @return 用于存储响应结果的CompletableFuture<RpcResponse<Object>>
+     */
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
         CompletableFuture<RpcResponse<Object>> resultFuture = new CompletableFuture<>();
@@ -125,6 +152,9 @@ public class NettyRpcClient implements RpcRequestTransport {
         return resultFuture;
     }
 
+    /**
+     * 关闭客户端 selector 和 thread
+     */
     public void close(){
         eventLoopGroup.shutdownGracefully();
     }

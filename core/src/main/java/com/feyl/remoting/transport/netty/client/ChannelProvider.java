@@ -15,6 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ChannelProvider {
 
+    /**
+     * key：网络套接字地址
+     * value：网络套接字地址对应的 channel
+     */
     private final Map<String, Channel> channelMap;
 
     public ChannelProvider() {

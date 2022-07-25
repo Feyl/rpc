@@ -17,8 +17,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 
 /**
- * call this method before creating the bean to see if the class is annotated
- * 在创建bean之前调用此方法，以查看类是否有注释
+ * 在bean实例化之后，初始化前后，以查看类是否有注解
+ *
+ * <a href="https://blog.csdn.net/qq_43185206/article/details/107787308">BeanPostProcessor接口的作用</a>
+ * <a href="https://zhuanlan.zhihu.com/p/40871948">Spring中的BeanPostProcessor</a>
  *
  * @author Feyl
  */
@@ -36,13 +38,17 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
     }
 
 
+    /**
+     * 在每一个bean实例的初始化方法调用之前回调，
+     * 将带有RpcService的bean实例注册到注册中心
+     */
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean.getClass().isAnnotationPresent(RpcService.class)) {
             log.info("[{}] is annotated with [{}]", bean.getClass().getName(), RpcService.class.getCanonicalName());
-            // 获取 RpcService 注解
+            //获取 RpcService 注解
             RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
-            // 构建 RpcService属性
+            //构建 RpcService属性
             RpcServiceConfig rpcServiceConfig = RpcServiceConfig.builder()
                     .group(rpcService.group())
                     .version(rpcService.version())
@@ -53,6 +59,10 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
     }
 
 
+    /**
+     * 在每个bean对象的初始化方法调用之后被回调。
+     * 为bean对象的类属性中被 @RpcReference 修饰的属性类创建代理对象并赋值
+     */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> targetClass = bean.getClass();

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * RPC服务配置类
  *
  * @author Feyl
  */
@@ -30,11 +31,16 @@ public class RpcServiceConfig {
     private String version = "";
 
 
+    /**
+     * interface name + group + version
+     * @return
+     */
     public String getRpcServiceName() {
         return this.getServiceName() + this.group + this.version;
     }
 
-    /*
+    /**
+     * 获取服务类实现的接口名
      *   canonical：规范化 .adj
      */
     public String getServiceName() {

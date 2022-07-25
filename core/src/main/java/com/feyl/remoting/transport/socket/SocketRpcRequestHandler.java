@@ -12,10 +12,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
+ * 基于 Socket 的RPC请求处理器
+ *
  * @author Feyl
  */
 @Slf4j
-public class SocketRpcRequestHandler implements Runnable{
+public class SocketRpcRequestHandler implements Runnable {
     private final Socket socket;
 
     private final RpcRequestHandler rpcRequestHandler;

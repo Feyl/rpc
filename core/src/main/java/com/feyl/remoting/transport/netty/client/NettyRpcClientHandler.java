@@ -53,11 +53,15 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
                 }
             }
         }finally {
+            //处理完消息后释放空间
             ReferenceCountUtil.release(msg);
         }
     }
 
 
+    /**
+     * 客户端超过 5s 没有发送消息时，将触发该方法向服务端发送心跳信号
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
@@ -79,7 +83,7 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 在处理客户端消息时发生异常时调用
+     * 在处理客户端消息时发生异常时调用，关闭 channel
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
