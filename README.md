@@ -5,4 +5,4 @@ A custom RPC framework based on Netty, Kyro, Zookeeper implementation.
 
 以后会随着学习的深入对内容进行扩充...
 
-致谢原仓库作者 **Guide哥** “让我们站在巨人的肩膀上，学到更多的知识”
+致谢原仓库作者 **Guide哥** “让我们站在巨人的肩膀上” 学到更多的知识
